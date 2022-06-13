@@ -42,7 +42,10 @@ const projects = [
     },
   ];
   
+<<<<<<< HEAD
   
+=======
+>>>>>>> 422d84f107b0aa4f48035f47a1a450689650e185
   // Clients
   const clients = [
     {
