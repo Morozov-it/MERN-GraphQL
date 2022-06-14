@@ -21,7 +21,7 @@ const ProjectType = new GraphQLObjectType({
         description: { type: GraphQLString },
         status: { type: GraphQLString },
 
-        //получение поля другой сущности
+        //получение поля другой сущности, parent это projectType
         client: {
             type: ClientType,
             resolve: (parent) => {

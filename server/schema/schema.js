@@ -6,6 +6,7 @@ const { GraphQLObjectType, GraphQLID, GraphQLString, GraphQLSchema, GraphQLList 
 const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
+        //поля в основном запросе
         clients: {
             type: new GraphQLList(ClientType), //чтобы вернуть просто массив объектов
             resolve: () => clients
