@@ -1,5 +1,5 @@
 const { GraphQLObjectType, GraphQLID, GraphQLString } = require('graphql')
-const { clients, projects } = require('../testData')
+const ClientController = require('../controllers/ClientController')
 
 //ClientType
 const ClientType = new GraphQLObjectType({
@@ -24,9 +24,7 @@ const ProjectType = new GraphQLObjectType({
         //получение поля другой сущности, parent это projectType
         client: {
             type: ClientType,
-            resolve: (parent) => {
-                return clients.find((client) => client.id === parent.id) //запросы к бд
-            }
+            resolve: (parent) => ClientController.getOne(parent.clientId)
         },
     })
 });
