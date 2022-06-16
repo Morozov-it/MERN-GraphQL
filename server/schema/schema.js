@@ -1,5 +1,13 @@
 const { ClientType, ProjectType } = require('./types')
-const { GraphQLObjectType, GraphQLID, GraphQLSchema, GraphQLList } = require('graphql')
+const {
+    GraphQLObjectType,
+    GraphQLID,
+    GraphQLSchema,
+    GraphQLList,
+    GraphQLString,
+    GraphQLNonNull,
+    GraphQLEnumType
+} = require('graphql')
 const ClientController = require('../controllers/ClientController')
 const ProjectController = require('../controllers/ProjectController')
 
@@ -8,9 +16,10 @@ const RootQuery = new GraphQLObjectType({
     name: 'RootQueryType',
     fields: {
         //поля в основном запросе
+        //clients
         clients: {
             type: new GraphQLList(ClientType), //чтобы вернуть просто массив объектов
-            resolve: () => ClientController.getAll() //запросы к бд
+            resolve: () => ClientController.getAll(), //запросы к бд
         },
         client: {
             type: ClientType,
@@ -18,6 +27,7 @@ const RootQuery = new GraphQLObjectType({
             resolve: (parent, args) => ClientController.getOne(args.id) //запросы к бд
         },
 
+        //projects
         projects: {
             type: new GraphQLList(ProjectType),
             resolve: () => ProjectController.getAll()
@@ -30,7 +40,54 @@ const RootQuery = new GraphQLObjectType({
     }
 });
 
+//Мутации
+const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        //clients
+        addClient: {
+            type: ClientType,
+            args: {
+                name: { type: GraphQLNonNull(GraphQLString) }, //обязательное поле
+                email: { type: GraphQLNonNull(GraphQLString) },
+                phone: { type: GraphQLNonNull(GraphQLString) }
+            },
+            resolve: (parent, args) => ClientController.create(args)
+        },
+        deleteClient: {
+            type: ClientType,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID) },
+            },
+            resolve: (parent, args) => ClientController.delete(args.id)
+        },
+
+        //projects
+        addProject: {
+            type: ProjectType,
+            args: {
+                name: { type: GraphQLNonNull(GraphQLString) },
+                description: { type: GraphQLNonNull(GraphQLString) },
+                status: {
+                    type: new GraphQLEnumType({
+                        name: 'ProjectStatus',
+                        values: {
+                            'new': { value: 'not started' },
+                            'progress': { value: 'in progress' },
+                            'completed': { value: 'completed' },
+                        }
+                    }),
+                    defaultValue: 'not started',
+                },
+                clientId: { type: GraphQLNonNull(GraphQLID) }
+            },
+            resolve: (parent, args) => ProjectController.create(args)
+        }
+    }
+})
+
 //на экспорт новый класс схемы с запросами
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation: Mutation
 })

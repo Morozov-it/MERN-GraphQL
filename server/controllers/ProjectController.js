@@ -15,6 +15,19 @@ class ProjectController {
             return new Error(e.message)
         }
     }
+    async create({ name, description, status, clientId }) {
+        try {
+            //проверка существующего проекта
+            const candidate = await Project.findOne({ where: { name }})
+            if (candidate) {
+                return new Error("This project is already existed")
+            }
+            //создание проекта в бд
+            return await Project.create({ name, description, status, clientId })
+        } catch (e) {
+            return new Error(e.message)
+        }
+    }
 }
 
 module.exports = new ProjectController()
