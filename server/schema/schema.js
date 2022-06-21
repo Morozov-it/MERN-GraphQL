@@ -82,6 +82,33 @@ const Mutation = new GraphQLObjectType({
                 clientId: { type: GraphQLNonNull(GraphQLID) }
             },
             resolve: (parent, args) => ProjectController.create(args)
+        },
+        deleteProject: {
+            type: ProjectType,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID) },
+            },
+            resolve: (parent, args) => ProjectController.delete(args.id)
+        },
+        updateProject: {
+            type: ProjectType,
+            args: {
+                id: { type: GraphQLNonNull(GraphQLID) }, //при обновлении только это обязательное поле, остальные можно не передавать, останутся без изменения
+                name: { type: GraphQLString },
+                description: { type: GraphQLString },
+                status: {
+                    type: new GraphQLEnumType({
+                        name: 'ProjectStatusUpdate',
+                        values: {
+                            'new': { value: 'not started' },
+                            'progress': { value: 'in progress' },
+                            'completed': { value: 'completed' },
+                        }
+                    }),
+                },
+                clientId: { type: GraphQLID }
+            },
+            resolve: (parent, args) => ProjectController.update(args)
         }
     }
 })
