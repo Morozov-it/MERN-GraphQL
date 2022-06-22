@@ -1,0 +1,12 @@
+query GetProjects {
+    projects {
+        id
+        name
+        description
+        status
+        client {
+            id
+            name
+        }
+    }
+}

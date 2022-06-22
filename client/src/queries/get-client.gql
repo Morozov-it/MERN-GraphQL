@@ -1,0 +1,8 @@
+query GetClient ($id: ID!) {
+    client (id: $id) {
+        id
+        name
+        email
+        phone
+    }
+}

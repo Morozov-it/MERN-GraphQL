@@ -116,5 +116,5 @@ const Mutation = new GraphQLObjectType({
 //на экспорт новый класс схемы с запросами
 module.exports = new GraphQLSchema({
     query: RootQuery,
-    mutation: Mutation
+    mutation: Mutation,
 })

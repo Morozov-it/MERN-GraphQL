@@ -1,0 +1,33 @@
+overwrite: true
+schema: "http://localhost:5000/graphql"
+
+documents: "src/**/*.gql"
+config:
+    # Работа с запросами ведется через react-hooks
+    withHooks: true
+    # Из типов для схемы исключается служебное поле __typename
+    skipTypename: true
+    # Типы генерируются на лету, без Pick - для чистоты информации по типу
+    preResolveTypes: true
+generates:
+  src/models/graphql-models.gen.ts:
+      plugins:
+        - "typescript"
+      config:
+        avoidOptionals: true
+  src/__generated__/graphql.schema.json:
+      plugins:
+        - "introspection"
+      config:
+        minify: true
+  src/:
+      preset: near-operation-file
+      # Типы схемы и запросы - разделены
+      presetConfig:
+        extension: .gen.ts
+        baseTypesPath: models/graphql-models.gen.ts
+      plugins:
+        - "typescript-operations"
+        - "typescript-react-apollo"
+      config:
+        avoidOptionals: true
