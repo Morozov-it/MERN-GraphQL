@@ -1,5 +1,7 @@
 import React from 'react'
 import styled from 'styled-components'
+import ColorModeProvider from './ColorModeProvider'
+import { ToggleButton } from './components/ToggleButton'
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -8,9 +10,12 @@ const Wrapper = styled.div`
 
 const App: React.FC = () => {
   return (
-    <Wrapper>
-      App
-    </Wrapper>
+    <ColorModeProvider>
+      <Wrapper>
+        <ToggleButton />
+        App
+      </Wrapper>
+    </ColorModeProvider>
   )
 }
 
