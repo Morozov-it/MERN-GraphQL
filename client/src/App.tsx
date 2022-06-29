@@ -4,7 +4,7 @@ import { Divider, Layout } from 'antd'
 import { setTheme, getTheme } from './theme-antd'
 import logo from '@assets/logo.png'
 import ToggleTheme from '@components/ToggleTheme'
-import Clients from '@components/Clients'
+import Clients from '@components/clients/Clients'
 import { Container } from '@components/Container'
 
 const LayoutWrapper = styled(Layout)`
